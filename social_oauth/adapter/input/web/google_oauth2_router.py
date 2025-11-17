@@ -8,6 +8,7 @@ from config.redis_config import get_redis
 from social_oauth.application.usecase.google_oauth2_usecase import GoogleOAuth2UseCase
 from social_oauth.infrastructure.service.google_oauth2_service import GoogleOAuth2Service
 
+# TODO 수정 필요
 authentication_router = APIRouter()
 service = GoogleOAuth2Service()
 account_repository = AccountRepositoryImpl()

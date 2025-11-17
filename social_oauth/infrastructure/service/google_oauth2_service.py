@@ -23,6 +23,7 @@ class GoogleOAuth2Service:
             f"&scope={quote(scope)}"
         )
 
+    # Access Token 생성
     def refresh_access_token(self, request: GetAccessTokenRequest) -> AccessToken:
         data = {
             "code": request.code,
@@ -42,6 +43,7 @@ class GoogleOAuth2Service:
             refresh_token=token_data.get("refresh_token")
         )
 
+    # Access Token을 통한 사용자 정보 조회
     def fetch_user_profile(self, access_token: AccessToken) -> dict:
         headers = {"Authorization": f"Bearer {access_token.access_token}"}
         resp = requests.get(GOOGLE_USERINFO_URL, headers=headers)
