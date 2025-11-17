@@ -55,3 +55,9 @@ class AnonymousBoardRepositoryImpl(AnonymousBoardRepositoryPort):
     def delete(self, board_id: int) -> None:
         self.db.query(AnonymousBoardORM).filter(AnonymousBoardORM.id == board_id).delete()
         self.db.commit()
+
+    def update(self, board: AnonymousBoard):
+        rows = self.db.query(AnonymousBoardORM).filter(AnonymousBoardORM.id == board.id).update({"title" : board.title, "content" : board.content })
+        self.db.commit()
+
+        return rows

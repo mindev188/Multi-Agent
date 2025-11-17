@@ -21,3 +21,7 @@ class AnonymousBoardRepositoryPort(ABC):
     @abstractmethod
     def delete(self, board_id: int) -> None:
         pass
+
+    @abstractmethod
+    def update(self, board) -> int:
+        pass

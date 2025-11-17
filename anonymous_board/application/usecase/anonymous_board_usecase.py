@@ -20,3 +20,8 @@ class AnonymousBoardUseCase:
 
     def delete_board(self, board_id: int) -> None:
         self.board_repo.delete(board_id)
+
+    def update_board(self, board: AnonymousBoard) -> int:
+        if self.board_repo.get_by_id(board.id):
+            return self.board_repo.update(board)
+        return -1

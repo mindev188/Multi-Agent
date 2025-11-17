@@ -3,8 +3,10 @@ from typing import List
 from fastapi import APIRouter, HTTPException
 
 from anonymous_board.adapter.input.web.request.create_anonymous_board_request import CreateAnonymousBoardRequest
+from anonymous_board.adapter.input.web.request.update_anonymous_board_request import UpdateAnonymousBoardRequest
 from anonymous_board.adapter.input.web.response.anonymous_board_response import AnonymousBoardResponse
 from anonymous_board.application.usecase.anonymous_board_usecase import AnonymousBoardUseCase
+from anonymous_board.domain.anonymous_board import AnonymousBoard
 from anonymous_board.infrastructure.repository.anonymous_board_repository_impl import AnonymousBoardRepositoryImpl
 
 anonymous_board_router = APIRouter()
@@ -53,3 +55,12 @@ def delete_board(board_id: int):
     if not success:
         raise HTTPException(status_code=404, detail="Board not found")
     return {"message": "Deleted successfully"}
+
+@anonymous_board_router.put("/update/{board_id}")
+def update_board(request: UpdateAnonymousBoardRequest, board_id: int):
+    anonymous_board = AnonymousBoard(request.title, request.content)
+    anonymous_board.id = board_id
+    rows = usecase.update_board(anonymous_board)
+    if rows <= 0:
+        raise HTTPException(status_code=404, detail="Board not found")
+    return {"message": "Updated successfully"}
