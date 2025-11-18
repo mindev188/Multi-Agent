@@ -2,9 +2,26 @@ from typing import List, Optional
 
 from anonymous_board.application.port.anonymous_board_repository_port import AnonymousBoardRepositoryPort
 from anonymous_board.domain.anonymous_board import AnonymousBoard
+from anonymous_board.infrastructure.repository.anonymous_board_repository_impl import AnonymousBoardRepositoryImpl
 
 
 class AnonymousBoardUseCase:
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+            cls.__instance.board_repo = AnonymousBoardRepositoryImpl.getInstance()
+
+        return cls.__instance
+
+    @classmethod
+    def getInstance(cls):
+        if cls.__instance is None:
+            cls.__instance = cls()
+
+        return cls.__instance
+
     def __init__(self, board_repo: AnonymousBoardRepositoryPort):
         self.board_repo = board_repo
 
