@@ -22,7 +22,7 @@ class AnonymousBoardUseCase:
 
         return cls.__instance
 
-    def __init__(self, board_repo: AnonymousBoardRepositoryPort):
+#   def __init__(self, board_repo: AnonymousBoardRepositoryPort):
         self.board_repo = board_repo
 
     def create_board(self, title: str, content: str) -> AnonymousBoard:
