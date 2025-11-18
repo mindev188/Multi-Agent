@@ -15,3 +15,7 @@ class AccountRepositoryPort(ABC):
     @abstractmethod
     def count(self) -> int:
         pass
+
+    @abstractmethod
+    def update_by_email(self, email: str, nickname: str) -> int:
+        pass

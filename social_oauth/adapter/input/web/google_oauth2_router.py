@@ -11,8 +11,8 @@ from social_oauth.infrastructure.service.google_oauth2_service import GoogleOAut
 # TODO 수정 필요
 authentication_router = APIRouter()
 service = GoogleOAuth2Service()
-account_repository = AccountRepositoryImpl()
-account_usecase = AccountUseCase(account_repository)
+account_repository = AccountRepositoryImpl.getInstance()
+account_usecase = AccountUseCase.getInstance()
 google_usecase = GoogleOAuth2UseCase(service)
 
 redis_client = get_redis()
@@ -51,7 +51,16 @@ async def process_google_redirect(
     print("[DEBUG] Generated session_id:", session_id)
 
     # Redis에 session 저장 (1시간 TTL)
-    redis_client.set(session_id, access_token.access_token, ex=3600)
+    # redis_client.set(session_id, access_token.access_token, ex=3600)
+    redis_client.hset(
+            session_id,
+            mapping= {
+                "email": profile.get("email"),
+                "access_token": access_token.access_token
+            }
+    )
+    redis_client.expire(session_id, 3600)
+
     print("[DEBUG] Session saved in Redis:", redis_client.exists(session_id))
 
     # 브라우저 쿠키 발급
